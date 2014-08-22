@@ -4,7 +4,6 @@ var React = require('react');
 
 var VideoPlayer = React.createClass({
   render: function() {
-  
   }
 });
 

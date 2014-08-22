@@ -5,7 +5,7 @@ var React = require('react');
 
 var Router  = require('react-router');
 
-var fetcher = require('./fetcher');
+var fetcher = require('./fetch');
 var processor = require('./logproc/processor');
 
 var VideoPlayer = require('jsx!./components/VideoPlayer');
