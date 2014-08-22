@@ -14,5 +14,8 @@
             "name": "app",
             "exclude": ["JSXTransformer", "text"]
         }
-    ]
+    ],
+    "jsx": {
+      "fileExtension": ".jsx"
+    }
 }

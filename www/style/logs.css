@@ -1,0 +1,51 @@
+.log-row {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.log-row {
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.log-time-cell {
+  width: 8rem;
+}
+
+/* like main page versus specific workers */
+.log-thread-cell {
+  width: 3rem;
+}
+
+.log-window-cell {
+  width: 12rem;
+}
+
+.log-level-cell {
+  width: 4rem;
+}
+
+.log-filename-cell {
+  width: 8rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.log-lineNumber-cell {
+  with: 2rem;
+}
+
+.log-functionName-cell {
+  width: 6rem;
+}
+
+/* the name of the log event; expected to be terse-ish */
+.log-name-cell {
+  width: 4rem;
+}
+
+.log-message-cell {
+}
+
+.log-generic-cell {
+}

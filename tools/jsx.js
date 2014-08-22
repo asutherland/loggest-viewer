@@ -51,14 +51,15 @@ define(['JSXTransformer', 'text'], function (JSXTransformer, text) {
           content += "\n//# sourceURL=" + location.protocol + "//" + location.hostname +
             config.baseUrl + name + fileExtension;
         }
-
+console.log('-- calling onLoadNative for', name + fileExtension);
         onLoadNative.fromText(content);
       };
-
+console.log('++ calling text.load for', name + fileExtension);
       text.load(name + fileExtension, req, onLoad, config);
     },
 
     write: function (pluginName, moduleName, write) {
+console.log('ww writing', moduleName);
       if (buildMap.hasOwnProperty(moduleName)) {
         var content = buildMap[moduleName];
         write.asModule(pluginName + "!" + moduleName, content);

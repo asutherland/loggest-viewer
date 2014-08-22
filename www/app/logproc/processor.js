@@ -51,7 +51,47 @@ function transformLogGrabberConsoleApi(normRep) {
   }
 }
 
+function transformCardsFailure(rawCards, allDetails) {
+  var cards = rawCards.map(function(rawCard) {
+    // TODO: normalize/transform the exception in the error case.
+    return rawCard;
+  });
+  return {
+    renderAs: 'cards',
+    cards: cards
+  };
+}
+
+var testFailureTransformersByKey = {
+  cards: transformCardsFailure
+};
+
+/**
+ * The failure log is a hodge-podge of stuff cramming their data into a single
+ * object.
+ */
 function transformTestFailureLog(normRep) {
+  var details = normRep.raw.details;
+  normRep.renderAs = 'failure';
+  var detailList = normRep.detailList = [];
+  for (var key in details) {
+    var data = details[key];
+    var handler = testFailureTransformersByKey[key];
+    if (handler) {
+      try {
+        detailList.push(handler(data, details));
+      }
+      catch(ex) {
+        console.warn('Handler unhappiness on', data, 'ex:', ex);
+      }
+    }
+    else {
+      detailList.push({
+        renderAs: 'unknown',
+        raw: data
+      });
+    }
+  }
 }
 
 /**
@@ -98,6 +138,7 @@ function transformLogObjs(objs) {
 }
 
 return {
+  transformLogObjs: transformLogObjs
 };
 
 }); // end define
