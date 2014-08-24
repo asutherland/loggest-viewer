@@ -5,7 +5,7 @@
 
 define(function(require) {
 
-function transformEmailLoggestTiny(normRep, msg) {
+function transformEmailLoggestTiny(normRep, msg, blackboard) {
   if (/^EIA{/.test(msg)) {
     normRep.renderAs = 'email';
     normRep.emailLog =  JSON.parse(msg.substring(3));
@@ -36,7 +36,7 @@ var tunneledLogTransformersByOrigin = {
  *
  * We can pass this through
  */
-function transformLogGrabberConsoleApi(normRep) {
+function transformLogGrabberConsoleApi(normRep, blackboard) {
   normRep.renderAs = 'console';
   var logged = normRep.consoleLog = normRep.raw.msg;
   if (!logged.window) {
@@ -47,7 +47,7 @@ function transformLogGrabberConsoleApi(normRep) {
 
   var handler = tunneledLogTransformersByOrigin[origin];
   if (handler) {
-    handler(normRep, logged.message);
+    handler(normRep, logged.message, blackboard);
   }
 }
 
@@ -70,7 +70,7 @@ var testFailureTransformersByKey = {
  * The failure log is a hodge-podge of stuff cramming their data into a single
  * object.
  */
-function transformTestFailureLog(normRep) {
+function transformTestFailureLog(normRep, blackboard) {
   var details = normRep.raw.details;
   normRep.renderAs = 'failure';
   var detailList = normRep.detailList = [];
@@ -95,11 +95,37 @@ function transformTestFailureLog(normRep) {
 }
 
 /**
+ * Explicit actions logged by the tests.
+ */
+function transformTestAction(normRep, blackboard) {
+  normRep.renderAs = 'action';
+}
+
+function transformTestStart(normRep, blackboard) {
+  blackboard.testStartTS = normRep.raw.startTS;
+}
+
+/**
+ * Logged when the ~first frame of video is captured, providing us with both the
+ * relative path of the video and the timestamp that should ideally correspond
+ * very closely to the start of the video.
+ */
+function transformTestVideo(normRep, blackboard) {
+  var raw = normRep.raw;
+  blackboard.videoPath = raw.videoPath;
+  blackboard.videoStartTS = raw.startTS;
+  // leave the normRep displaying this as unknown; we don't need a special type.
+}
+
+/**
  *
  */
 var recordedLogMapSourceAndType = {
   'client-log': transformLogGrabberConsoleApi,
-  'test-failureLog': transformTestFailureLog
+  'test-failureLog': transformTestFailureLog,
+  'test-start': transformTestStart,
+  'test-testAction': transformTestAction,
+  'test-video': transformTestVideo
 };
 
 /**
@@ -107,14 +133,17 @@ var recordedLogMapSourceAndType = {
  */
 function transformLogObjs(objs) {
   var unknownMapKeyCounts = {};
-
-  var transformedObjs = objs.map(function(obj) {
+  var blackboard = {};
+  var transformedObjs = objs.map(function(obj, index) {
     var mapkey = obj.source + '-' + obj.type;
     var handler = recordedLogMapSourceAndType[mapkey];
     var normRep = {
+      id: index,
       renderAs: 'unknown',
       raw: obj
     };
+    // Shared blackboard for building notable indices/aggregates or stashing
+    // important probably-singleton pieces of data, like when the video starts.
     if (!handler) {
       if (!unknownMapKeyCounts[mapkey]) {
         unknownMapKeyCounts[mapkey] = 1;
@@ -125,7 +154,7 @@ function transformLogObjs(objs) {
       return normRep;
     }
     try {
-      handler(normRep);
+      handler(normRep, blackboard);
     }
     catch(ex) {
       console.error('handler error', ex.message, ex.stack, 'on', obj);
@@ -136,7 +165,10 @@ function transformLogObjs(objs) {
   if (Object.keys(unknownMapKeyCounts).length) {
     console.warn('Encountered some unknown log types:', unknownMapKeyCounts);
   }
-  return transformedObjs;
+  return {
+    blackboard: blackboard,
+    logs: transformedObjs
+  };
 }
 
 return {

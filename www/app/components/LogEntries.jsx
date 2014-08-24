@@ -10,7 +10,7 @@ var LogEntries = React.createClass({
     return (
       <ReactList
         items={this.props.entries}
-        renderItem={logFactory}
+        renderItem={ logFactory.bind(null, this.props.timeContext) }
         />
     );
   }

@@ -1,4 +1,3 @@
-
 define(function(require) {
 
 var React = require('react');
@@ -13,9 +12,12 @@ var UnknownLog = React.createClass({
   render: function() {
     var obj = this.props.normRep.raw;
     return (
-      <div class="log-row">{
-        obj.keys.map(function(key) {
-          return <span class="log-generic-cell">{key}: {obj[key]}</span>;
+      <div key={ this.props.normRep.id } className="log-row">{
+        Object.keys(obj).map(function(key) {
+          return (
+            <span key={key} className="log-generic-cell"
+              >{key}: {obj[key]}</span>
+          );
         })
       }</div>
     );

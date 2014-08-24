@@ -6,6 +6,8 @@ var React = require('react');
 var fetch = require('./fetch');
 var processor = require('./logproc/processor');
 
+var TimeContext = require('./time_context');
+
 var queryString = require('./query_string');
 
 var VideoPlayer = require('jsx!./components/VideoPlayer');
@@ -28,6 +30,8 @@ var LogLoader = React.createClass({
     if (!logUrl) {
       return {
         logUrl: null,
+        videoUrl: null,
+        logEntries: null
       };
     }
 
@@ -35,16 +39,26 @@ var LogLoader = React.createClass({
     return {
       logUrl: logUrl,
       videoUrl: videoUrl,
-      logEntries: []
+      blackboard: {},
+      logEntries: [],
+      timeContext: null
     };
   },
 
   componentDidMount: function() {
     fetch.fetchJsons(this.state.logUrl)
       .then(processor.transformLogObjs)
-      .then(function(transformedLogs) {
+      .then(function(transformed) {
+        var videoStartTS = transformed.blackboard.videoStartTS;
+        var testStartTS = transformed.blackboard.testStartTS;
+        var timeContext = new TimeContext({
+          // there may not be a video.
+          startTS: videoStartTS || testStartTS
+        });
         this.setState({
-          logEntries: transformedLogs
+          timeContext: timeContext,
+          blackboard: transformed.blackboard,
+          logEntries: transformed.logs
         });
       }.bind(this));
   },
@@ -61,8 +75,12 @@ var LogLoader = React.createClass({
 
     return (
       <div>
-        <VideoPlayer url={this.state.videoUrl} />
-        <LogEntries entries={this.state.logEntries} />
+        <VideoPlayer
+          url={ this.state.videoUrl }
+          timeContext={ this.state.timeContext }/>
+        <LogEntries
+          entries={ this.state.logEntries }
+          timeContext={ this.state.timeContext }/>
       </div>
     );
   }

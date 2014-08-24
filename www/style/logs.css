@@ -3,13 +3,26 @@
 }
 
 .log-row {
-  display: flex;
-  flex-flow: row wrap;
+  display: block;
 }
 
-.log-row {
-  display: flex;
-  flex-flow: row nowrap;
+.log-time-cell,
+.log-thread-cell,
+.log-window-cell,
+.log-origin-cell,
+.log-level-cell,
+.log-filename-cell,
+.log-lineNumber-cell,
+.log-functionName-cell,
+.log-name-cell,
+.log-message-cell,
+.log-action-cell,
+.log-generic-cell {
+  display: inline-block;
+}
+
+.log-cell-clump {
+  display: inline-block;
 }
 
 .log-time-cell {
@@ -23,6 +36,10 @@
 
 .log-window-cell {
   width: 400px;
+}
+
+.log-origin-cell {
+  width: 200px;
 }
 
 .log-level-cell {
@@ -49,6 +66,9 @@
 }
 
 .log-message-cell {
+}
+
+.log-action-cell {
 }
 
 .log-generic-cell {

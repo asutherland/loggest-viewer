@@ -4,7 +4,15 @@ var React = require('react');
 
 var VideoPlayer = React.createClass({
   render: function() {
-    return <video src={this.props.url} />;
+    return (
+      <video src={this.props.url}
+         controls="true" preload="auto"/>
+    );
+  },
+
+  componentDidMount: function() {
+    var domNode = this.getDOMNode();
+    domNode.playbackRate = this.props.playbackRate || 0.5;
   }
 });
 

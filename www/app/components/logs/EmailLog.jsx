@@ -1,6 +1,7 @@
 define(function(require) {
 
 var React = require('react');
+var TimeCell = require('jsx!./TimeCell');
 
 /**
  * Currently generic email log displaying stuff that just displays the fixed
@@ -10,12 +11,14 @@ var EmailLog = React.createClass({
   render: function() {
     var elog = this.props.normRep.emailLog;
     return (
-      <div class="log-row">
-        <div class="log-time-cell">{ elog.ts }</div>
-        <div class="log-thread-cell">{ elog.c }</div>
-        <div class="log-level-cell">{ elog.l }</div>
-        <div class="log-name-cell"> { elog.w }</div>
-        { elog.keys.map(function(key) {
+      <div key={ this.props.normRep.id } className="log-row">
+        <TimeCell
+          timeContext={ this.props.timeContext }
+          timeStamp={ elog.ts } />
+        <span className="log-thread-cell">{ elog.c }</span>
+        <span className="log-level-cell">{ elog.l }</span>
+        <span className="log-name-cell"> { elog.w }</span>
+        { Object.keys(elog).map(function(key) {
             switch (key) {
               case 'ts':
               case 'c':
@@ -23,7 +26,10 @@ var EmailLog = React.createClass({
               case 'w':
                 return null;
               default:
-                return <div class="log-generic-cell">{key}: {elog[key]}</div>;
+                return (
+                  <span key={key} className="log-generic-cell"
+                    >{key}: {elog[key]}</span>
+                );
             }
           })}
       </div>
