@@ -3,10 +3,10 @@ define(function (require) {
 
 var React = require('react');
 
-var Router  = require('react-router');
-
-var fetcher = require('./fetch');
+var fetch = require('./fetch');
 var processor = require('./logproc/processor');
+
+var queryString = require('./query_string');
 
 var VideoPlayer = require('jsx!./components/VideoPlayer');
 var LogEntries = require('jsx!./components/LogEntries');
@@ -15,30 +15,42 @@ var LogEntries = require('jsx!./components/LogEntries');
  * Show a loading message until we've
  */
 var LogLoader = React.createClass({
-  mixins: [ Router.AsyncState ],
+  getInitialState: function() {
+    var logUrl;
+    if (window.location.search) {
+      var searchParams = queryString.toObject(
+        window.location.search.substring(1));
 
-  statics: {
-    getInitialAsyncState: function(params, query, setState) {
-      var logUrl = query.url;
-      if (!logUrl) {
-        return {
-          logUrl: null,
-        };
+      if (searchParams.url) {
+        logUrl = searchParams.url;
       }
-
-      var videoUrl = logUrl.replace(/\.jsons$/, '.webm');
-      var transformedLogs = fetcher.fetchJsons(logUrl)
-                              .then(processor.transformLogObjs);
+    }
+    if (!logUrl) {
       return {
-        logUrl: logUrl,
-        videoUrl: videoUrl,
-        logEntries: transformedLogs
+        logUrl: null,
       };
     }
+
+    var videoUrl = logUrl.replace(/\.jsons$/, '.webm');
+    return {
+      logUrl: logUrl,
+      videoUrl: videoUrl,
+      logEntries: []
+    };
+  },
+
+  componentDidMount: function() {
+    fetch.fetchJsons(this.state.logUrl)
+      .then(processor.transformLogObjs)
+      .then(function(transformedLogs) {
+        this.setState({
+          logEntries: transformedLogs
+        });
+      }.bind(this));
   },
 
   render: function() {
-    if (this.state.logUrl) {
+    if (!this.state.logUrl) {
       return (
         <div>
           <h2>We need a URL to find the log at!</h2>
@@ -49,19 +61,13 @@ var LogLoader = React.createClass({
 
     return (
       <div>
-        <VideoPlayer url={this.state.logUrl} />
+        <VideoPlayer url={this.state.videoUrl} />
         <LogEntries entries={this.state.logEntries} />
       </div>
     );
   }
 });
 
-var routes = (
-  <Routes>
-    <Route handler={LogLoader}/>
-  </Routes>
-);
-
-React.renderComponent(routes, document.getElementById('content'));
+React.renderComponent(<LogLoader />, document.getElementById('content'));
 
 });

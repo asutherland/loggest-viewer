@@ -51,7 +51,7 @@ function fetchJsons(url) {
 
 return {
   fetch: fetch,
-  fetchLogs: fetchJsons
+  fetchJsons: fetchJsons
 };
 
 }); // end define

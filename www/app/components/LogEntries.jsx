@@ -3,7 +3,7 @@ define(function (require) {
 var React = require('react');
 var ReactList = require('react-list');
 
-var logFactory = require('jsx!./logs/registry');
+var logFactory = require('jsx!./logs/registry').logFactory;
 
 var LogEntries = React.createClass({
   render: function() {

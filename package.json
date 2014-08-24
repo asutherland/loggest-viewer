@@ -3,8 +3,7 @@
   "volo": {
     "baseUrl": "www/lib",
     "dependencies": {
-      "react-list": "github:orgsync/react-list/0.1.2",
-      "react-router": "github:rackt/react-router/v0.5.2"
+      "react-list": "github:orgsync/react-list/0.1.2"
     }
   }
 }

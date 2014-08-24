@@ -38,7 +38,7 @@ var tunneledLogTransformersByOrigin = {
  */
 function transformLogGrabberConsoleApi(normRep) {
   normRep.renderAs = 'console';
-  var logged = normRep.consoleLog = normRep.msg;
+  var logged = normRep.consoleLog = normRep.raw.msg;
   if (!logged.window) {
     return;
   }
@@ -111,24 +111,26 @@ function transformLogObjs(objs) {
   var transformedObjs = objs.map(function(obj) {
     var mapkey = obj.source + '-' + obj.type;
     var handler = recordedLogMapSourceAndType[mapkey];
+    var normRep = {
+      renderAs: 'unknown',
+      raw: obj
+    };
     if (!handler) {
-      if (unknownMapKeyCounts[mapkey]) {
+      if (!unknownMapKeyCounts[mapkey]) {
         unknownMapKeyCounts[mapkey] = 1;
       }
       else {
         unknownMapKeyCounts[mapkey]++;
       }
+      return normRep;
     }
-    var normRep = {
-      renderAs: 'unknown',
-      raw: obj
-    };
     try {
       handler(normRep);
     }
     catch(ex) {
-      console.error('handler error', ex, 'on', obj);
+      console.error('handler error', ex.message, ex.stack, 'on', obj);
     }
+    return normRep;
   });
 
   if (Object.keys(unknownMapKeyCounts).length) {

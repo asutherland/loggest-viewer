@@ -5,8 +5,14 @@
 // directory.
 requirejs.config({
     baseUrl: 'lib',
-    paths: {
-        app: '../app'
+    "paths": {
+        "app": "../app",
+        "jsx": "../../tools/jsx",
+        "JSXTransformer": "../../tools/JSXTransformer-0.11.1",
+        "text": "../../tools/text"
+    },
+    "jsx": {
+      "fileExtension": ".jsx"
     }
 });
 

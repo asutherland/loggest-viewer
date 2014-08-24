@@ -11,15 +11,15 @@ var ConsoleLog = React.createClass({
     var rep = this.props.normRep.consoleLog;
     return (
       <div class="log-row">
-        <div class="log-time-cell">{ rep.timeStamp }</div>
-        <div class="log-level-cell">{ rep.level }</div>
-        <div class="log-window-cell">{ rep.window }</div>
-        <div class="log-cell-clump">
-          <div class="log-filename-cell">{ rep.filename }</div>
-          <div class="log-lineNumber-cell">{ rep.lineNumber }</div>
-        </div>
-        <div class="log-functionName-cell">{ rep.lineNumber }</div>
-        <div class="log-message-cell">{ rep.message }</div>
+        <span class="log-time-cell">{ rep.timeStamp }</span>
+        <span class="log-level-cell">{ rep.level }</span>
+        <span class="log-window-cell">{ rep.window }</span>
+        <span class="log-cell-clump">
+          <span class="log-filename-cell">{ rep.filename }</span>
+          <span class="log-lineNumber-cell">{ rep.lineNumber }</span>
+        </span>
+        <span class="log-functionName-cell">{ rep.lineNumber }</span>
+        <span class="log-message-cell">{ rep.message }</span>
       </div>
     );
   }

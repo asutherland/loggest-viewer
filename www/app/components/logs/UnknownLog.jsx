@@ -13,11 +13,11 @@ var UnknownLog = React.createClass({
   render: function() {
     var obj = this.props.normRep.raw;
     return (
-      <div class="log-row">
-        { obj.keys.map(function(key) {
-            return <div class="log-generic-cell">{key}: {obj[key]}</div>;
-          })}
-      </div>
+      <div class="log-row">{
+        obj.keys.map(function(key) {
+          return <span class="log-generic-cell">{key}: {obj[key]}</span>;
+        })
+      }</div>
     );
   }
 });
