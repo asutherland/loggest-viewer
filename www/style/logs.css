@@ -1,3 +1,7 @@
+.log-group {
+
+}
+
 .log-row {
   display: flex;
   flex-flow: row wrap;
@@ -9,39 +13,39 @@
 }
 
 .log-time-cell {
-  width: 8rem;
+  width: 120px;
 }
 
 /* like main page versus specific workers */
 .log-thread-cell {
-  width: 3rem;
+  width: 40px;
 }
 
 .log-window-cell {
-  width: 12rem;
+  width: 400px;
 }
 
 .log-level-cell {
-  width: 4rem;
+  width: 40px;
 }
 
 .log-filename-cell {
-  width: 8rem;
+  width: 160px;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .log-lineNumber-cell {
-  with: 2rem;
+  with: 20px;
 }
 
 .log-functionName-cell {
-  width: 6rem;
+  width: 120px;
 }
 
 /* the name of the log event; expected to be terse-ish */
 .log-name-cell {
-  width: 4rem;
+  width: 120px;
 }
 
 .log-message-cell {
