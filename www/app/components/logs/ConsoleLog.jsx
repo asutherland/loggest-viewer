@@ -6,22 +6,17 @@ var TimeCell = require('jsx!./TimeCell');
 var ConsoleLog = React.createClass({
   render: function() {
     var rep = this.props.normRep.consoleLog;
+    var origin = this.props.normRep.origin;
+    var levelClasses = 'log-level-cell log-level-cell-' + rep.level;
     return (
-      <div key={ this.props.normRep.id } className="log-entry">
-        <div className="log-row">
-          <TimeCell
-            timeContext={ this.props.timeContext }
-            timeStamp={ rep.timeStamp } />
-          <span className="log-level-cell">{ rep.level }</span>
-          <span className="log-window-cell">{ rep.window }</span>
-          <span className="log-cell-clump">
-            <span className="log-filename-cell">{ rep.filename }</span>
-            <span className="log-lineNumber-cell">{ rep.lineNumber }</span>
-          </span>
-        </div>
-        <div className="log-row">
-          <span className="log-message-cell">{ rep.message }</span>
-        </div>
+      <div key={ this.props.normRep.id } className="log-row">
+        <TimeCell
+          timeContext={ this.props.timeContext }
+          timeStamp={ rep.timeStamp } />
+        <span className={ levelClasses }>{ rep.level }</span>
+        <span className="log-origin-cell"
+          title={ rep.filename + ':' + rep.lineNumber }>{ origin }</span>
+        <span className="log-message-cell">{ rep.message }</span>
       </div>
     );
   }

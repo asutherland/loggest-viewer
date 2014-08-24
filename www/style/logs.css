@@ -1,5 +1,39 @@
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.log-viewer-container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+.log-video-and-failure {
+  display: flex;
+  flex: 0 0 main-size;
+  flex-flow: row nowrap;
+}
+
+.log-video {
+  flex: 0 0 main-size;
+}
+
+.log-entries {
+  flex: 1 1 auto;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
 .log-group {
 
+}
+
+.log-entry {
 }
 
 .log-row {
@@ -26,7 +60,8 @@
 }
 
 .log-time-cell {
-  width: 120px;
+  width: 60px;
+  color: #444;
 }
 
 /* like main page versus specific workers */
@@ -39,11 +74,18 @@
 }
 
 .log-origin-cell {
-  width: 200px;
+  width: 240px;
 }
 
 .log-level-cell {
   width: 40px;
+}
+
+.log-level-cell-error {
+  color: red;
+}
+.log-level-cell-warn {
+  color: gold;
 }
 
 .log-filename-cell {
@@ -62,13 +104,29 @@
 
 /* the name of the log event; expected to be terse-ish */
 .log-name-cell {
-  width: 120px;
+  width: 260px;
 }
 
 .log-message-cell {
 }
 
 .log-action-cell {
+  background-color: #ddf;
+}
+
+.log-action-label {
+  font-weight: bold;
+}
+
+.log-keyvalue-cell {
+  padding-right: 0.4em;
+}
+
+.log-key-subcell {
+  background-color: #eee;
+}
+
+.log-value-subcell {
 }
 
 .log-generic-cell {

@@ -10,13 +10,14 @@ var TimeCell = require('jsx!./TimeCell');
 var EmailLog = React.createClass({
   render: function() {
     var elog = this.props.normRep.emailLog;
+    var levelClasses = 'log-level-cell log-level-cell-' + elog.l;
     return (
       <div key={ this.props.normRep.id } className="log-row">
         <TimeCell
           timeContext={ this.props.timeContext }
           timeStamp={ elog.ts } />
-        <span className="log-thread-cell">{ elog.c }</span>
-        <span className="log-level-cell">{ elog.l }</span>
+        <span className={ levelClasses }>{ elog.l }</span>
+        <span className="log-origin-cell">email : { elog.c }</span>
         <span className="log-name-cell"> { elog.w }</span>
         { Object.keys(elog).map(function(key) {
             switch (key) {
@@ -27,8 +28,9 @@ var EmailLog = React.createClass({
                 return null;
               default:
                 return (
-                  <span key={key} className="log-generic-cell"
-                    >{key}: {elog[key]}</span>
+                  <span key={key} className="log-keyvalue-cell"
+                    ><span className="log-key-subcell">{key}</span> <span
+                      className="log-value-subcell">{elog[key]}</span></span>
                 );
             }
           })}

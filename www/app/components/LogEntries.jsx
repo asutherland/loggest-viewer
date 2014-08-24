@@ -8,9 +8,10 @@ var logFactory = require('jsx!./logs/registry').logFactory;
 var LogEntries = React.createClass({
   render: function() {
     return (
-      <ReactList
+      <ReactList className="log-entries"
         items={this.props.entries}
         renderItem={ logFactory.bind(null, this.props.timeContext) }
+        uniform={ true }
         />
     );
   }

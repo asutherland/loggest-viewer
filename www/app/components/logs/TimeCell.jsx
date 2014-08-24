@@ -11,7 +11,7 @@ var TimeCell = React.createClass({
   render: function() {
     var reltime = this.props.timeContext.makeRelativeSecs(this.props.timeStamp);
     return (
-      <span className="log-time-cell">+{ reltime.toFixed(3) }s</span>
+      <span className="log-time-cell">{ reltime.toFixed(3) }s</span>
     );
   }
 });

@@ -114,6 +114,10 @@ function transformTestVideo(normRep, blackboard) {
   var raw = normRep.raw;
   blackboard.videoPath = raw.videoPath;
   blackboard.videoStartTS = raw.startTS;
+  blackboard.videoDimensions = {
+    width: raw.width,
+    height: raw.height
+  };
   // leave the normRep displaying this as unknown; we don't need a special type.
 }
 

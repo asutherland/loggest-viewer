@@ -15,7 +15,8 @@ var ActionLog = React.createClass({
         <TimeCell
           timeContext={ this.props.timeContext }
           timeStamp={ raw.timeStamp } />
-        <span className="log-action-cell">{ raw.action }</span>
+        <span className="log-action-cell">
+          <span className="log-action-label">Action</span> { raw.action }</span>
       </div>
     );
   }

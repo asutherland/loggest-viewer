@@ -15,8 +15,9 @@ var UnknownLog = React.createClass({
       <div key={ this.props.normRep.id } className="log-row">{
         Object.keys(obj).map(function(key) {
           return (
-            <span key={key} className="log-generic-cell"
-              >{key}: {obj[key]}</span>
+            <span key={key} className="log-keyvalue-cell"
+              ><span className="log-key-subcell">{key}</span> <span
+                className="log-value-subcell">{obj[key]}</span></span>
           );
         })
       }</div>

@@ -14,7 +14,13 @@ var VideoPlayer = require('jsx!./components/VideoPlayer');
 var LogEntries = require('jsx!./components/LogEntries');
 
 /**
- * Show a loading message until we've
+ * Our overall UI.
+ *
+ * Our layout is:
+ * ( video ) ( failure details )
+ * (       logs                )
+ *
+ * If we got fancier
  */
 var LogLoader = React.createClass({
   getInitialState: function() {
@@ -39,8 +45,8 @@ var LogLoader = React.createClass({
     return {
       logUrl: logUrl,
       videoUrl: videoUrl,
-      blackboard: {},
-      logEntries: [],
+      blackboard: null,
+      logEntries: null,
       timeContext: null
     };
   },
@@ -58,7 +64,8 @@ var LogLoader = React.createClass({
         this.setState({
           timeContext: timeContext,
           blackboard: transformed.blackboard,
-          logEntries: transformed.logs
+          logEntries: transformed.logs,
+          videoDimensions: transformed.blackboard.videoDimensions
         });
       }.bind(this));
   },
@@ -73,11 +80,22 @@ var LogLoader = React.createClass({
       );
     }
 
+    if (!this.state.logEntries) {
+      return (
+        <div>Loading...</div>
+      );
+    }
+
+    var videoRowStyle = { minHeight: this.state.videoDimensions.height };
     return (
-      <div>
-        <VideoPlayer
-          url={ this.state.videoUrl }
-          timeContext={ this.state.timeContext }/>
+      <div className="log-viewer-container">
+        <div className="log-video-and-failure" style={ videoRowStyle }>
+          <VideoPlayer
+            url={ this.state.videoUrl }
+            timeContext={ this.state.timeContext }
+            dimensions={ this.state.videoDimensions }/>
+          <div className="failureDetails"></div>
+        </div>
         <LogEntries
           entries={ this.state.logEntries }
           timeContext={ this.state.timeContext }/>
