@@ -58,9 +58,15 @@ var LogLoader = React.createClass({
       .then(function(transformed) {
         var videoStartTS = transformed.blackboard.videoStartTS;
         var testStartTS = transformed.blackboard.testStartTS;
+        var failureTS = null;
+        if (transformed.blackboard.lastFailure) {
+          failureTS = transformed.blackboard.lastFailure.raw.timeStamp;
+        }
+
         var timeContext = new TimeContext({
           // there may not be a video.
-          startTS: videoStartTS || testStartTS
+          startTS: videoStartTS || testStartTS,
+          initialTS: failureTS
         });
         this.setState({
           timeContext: timeContext,

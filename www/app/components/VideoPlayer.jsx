@@ -16,9 +16,36 @@ var VideoPlayer = React.createClass({
   },
 
   componentDidMount: function() {
-    var domNode = this.getDOMNode();
-    domNode.playbackRate = this.props.playbackRate || 0.5;
+    var player = this.getDOMNode();
+    var timeContext = this.props.timeContext;
+    player.playbackRate = this.props.playbackRate || 0.5;
+    var initialSeek = function() {
+      var seekTo = timeContext.makeRelativeSecs(timeContext.initialTS);
+      console.log('trying to seek to', seekTo);
+      player.currentTime = seekTo;
+      player.removeEventListener('canplay', initialSeek);
+    };
+    player.addEventListener('canplay', initialSeek);
+    player.addEventListener('seeked', this.onSeeked);
+    player.addEventListener('timeupdate', this.onTimeUpdate);
+
+    timeContext.on('seekRequested', this.handleSeekRequest);
   },
+
+  onSeeked: function() {
+    var player = this.getDOMNode();
+    this.props.timeContext.notifySeekOccurred(player.currentTime, 'user');
+  },
+
+  onTimeUpdate: function() {
+    var player = this.getDOMNode();
+    this.props.timeContext.notifyVideoProgress(player.currentTime);
+  },
+
+  handleSeekRequest: function(req) {
+    var player = this.getDOMNode();
+    player.currentTime = req.relSecs;
+  }
 });
 
 return VideoPlayer;

@@ -147,7 +147,7 @@ function transformTestStart(normRep, blackboard) {
  * relative path of the video and the timestamp that should ideally correspond
  * very closely to the start of the video.
  */
-function transformTestVideo(normRep, blackboard) {
+function transformTestVideoStart(normRep, blackboard) {
   var raw = normRep.raw;
   blackboard.videoPath = raw.videoPath;
   blackboard.videoStartTS = raw.startTS;
@@ -166,7 +166,7 @@ var recordedLogMapSourceAndType = {
   'test-failureLog': transformTestFailureLog,
   'test-start': transformTestStart,
   'test-testAction': transformTestAction,
-  'test-video': transformTestVideo
+  'test-video-start': transformTestVideoStart
 };
 
 /**

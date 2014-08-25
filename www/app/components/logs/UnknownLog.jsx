@@ -17,7 +17,7 @@ var UnknownLog = React.createClass({
           return (
             <span key={key} className="log-keyvalue-cell"
               ><span className="log-key-subcell">{key}</span> <span
-                className="log-value-subcell">{obj[key]}</span></span>
+                className="log-value-subcell">{obj[key]} </span></span>
           );
         })
       }</div>

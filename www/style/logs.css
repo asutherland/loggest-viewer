@@ -4,6 +4,8 @@ html, body {
   margin: 0;
   padding: 0;
   overflow: hidden;
+  font-family: serif;
+  font-size: 14px;
 }
 
 h2 {
@@ -72,7 +74,7 @@ h3 {
 }
 
 .log-time-cell {
-  width: 60px;
+  width: 65px;
   color: #444;
   cursor: pointer;
   text-align: right;
@@ -89,7 +91,7 @@ h3 {
 }
 
 .log-origin-cell {
-  width: 240px;
+  width: 260px;
 }
 
 .log-level-cell {
@@ -134,7 +136,6 @@ h3 {
 }
 
 .log-keyvalue-cell {
-  padding-right: 0.4em;
 }
 
 .log-key-subcell {
