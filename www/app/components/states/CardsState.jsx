@@ -12,10 +12,9 @@ var CardsState = React.createClass({
       <div key={ normRep.id } className="failure-cards">
         <h3>Cards</h3>
         {
-          cards.map(function(card, iCard) {
+          cards.map(function(card) {
             return (
               <GenericCard
-                index={ iCard }
                 timeContext={ timeContext }
                 card={ card } />
             );

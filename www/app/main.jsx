@@ -56,7 +56,8 @@ var LogLoader = React.createClass({
     fetch.fetchJsons(this.state.logUrl)
       .then(processor.transformLogObjs)
       .then(function(transformed) {
-        var videoStartTS = transformed.blackboard.videoStartTS;
+        // allow for ~2 frames of video latency
+        var videoStartTS = transformed.blackboard.videoStartTS - (2000/30);
         var testStartTS = transformed.blackboard.testStartTS;
         var failureTS = null;
         if (transformed.blackboard.lastFailure) {

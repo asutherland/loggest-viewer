@@ -17,5 +17,8 @@
     ],
     "jsx": {
       "fileExtension": ".jsx"
-    }
+    },
+    "fileExclusionRegExp": /(?:^\.)|(?:.+~$)/,
+    "optimize": "uglify2",
+
 }
