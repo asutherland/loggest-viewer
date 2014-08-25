@@ -8,6 +8,9 @@ define(function(require) {
  */
 function TimeContext(opts) {
   this.startTS = opts.startTS;
+  this.curTS = this.curTS || this.startTS;
+  // XXX use fancy event emitters in the future.
+  this.onseek = opts.onseek;
 }
 TimeContext.prototype = {
   seekToTimeStamp: function(ts) {

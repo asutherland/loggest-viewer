@@ -15,7 +15,8 @@ var ConsoleLog = React.createClass({
           timeStamp={ rep.timeStamp } />
         <span className={ levelClasses }>{ rep.level }</span>
         <span className="log-origin-cell"
-          title={ rep.filename + ':' + rep.lineNumber }>{ origin }</span>
+          title={rep.filename + ':' + rep.lineNumber + '  ' + rep.functionName}
+          >{ origin }</span>
         <span className="log-message-cell">{ rep.message }</span>
       </div>
     );

@@ -8,10 +8,15 @@ var React = require('react');
  * timestamp when clicked upon.
  */
 var TimeCell = React.createClass({
+  handleClick: function() {
+    this.props.timeContext.seekToTimeStamp(this.props.timeStamp);
+  },
   render: function() {
     var reltime = this.props.timeContext.makeRelativeSecs(this.props.timeStamp);
     return (
-      <span className="log-time-cell">{ reltime.toFixed(3) }s</span>
+      <span className="log-time-cell"
+        onClick={ this.handleClick }
+        >{ reltime.toFixed(3) }s</span>
     );
   }
 });

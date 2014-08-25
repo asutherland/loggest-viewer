@@ -11,6 +11,7 @@ var TimeContext = require('./time_context');
 var queryString = require('./query_string');
 
 var VideoPlayer = require('jsx!./components/VideoPlayer');
+var FailureDetails = require('jsx!./components/FailureDetails');
 var LogEntries = require('jsx!./components/LogEntries');
 
 /**
@@ -86,7 +87,10 @@ var LogLoader = React.createClass({
       );
     }
 
-    var videoRowStyle = { minHeight: this.state.videoDimensions.height };
+    var videoRowStyle = {
+      minHeight: this.state.videoDimensions.height,
+      maxHeight: this.state.videoDimensions.height
+    };
     return (
       <div className="log-viewer-container">
         <div className="log-video-and-failure" style={ videoRowStyle }>
@@ -94,7 +98,8 @@ var LogLoader = React.createClass({
             url={ this.state.videoUrl }
             timeContext={ this.state.timeContext }
             dimensions={ this.state.videoDimensions }/>
-          <div className="failureDetails"></div>
+          <FailureDetails
+            detailList = { this.state.blackboard.lastFailure.detailList } />
         </div>
         <LogEntries
           entries={ this.state.logEntries }

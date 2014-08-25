@@ -1,5 +1,6 @@
 /**
- *
+ * Maps log "renderAs" types to the appropriate widget.  Could potentially do
+ * some of this asynchronously.  Maybe.  Somehow.
  **/
 
 define(function(require) {

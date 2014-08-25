@@ -51,12 +51,47 @@ function transformLogGrabberConsoleApi(normRep, blackboard) {
   }
 }
 
+// function@file:line
+var SM_STACK_FORMAT = /^(.*)@(.+):(\d+)$/;
+// object-functiony-thing at (file:line:col)
+var NODE_STACK_FORMAT = /^ +at ([^ ]+) \(([^:]+):(\d+):\d+\)$/;
+function transformException(exObj) {
+  var frames = [];
+  var stackString = exObj.stack;
+  var transformed = {
+    name: exObj.name,
+    message: exObj.message,
+    frames: frames,
+    stackString: stackString
+  };
+  var sframes = stackString.split("\n"),match;
+  for (var i = 0; i < sframes.length; i++) {
+    // (Note that for the node case right now the message ends up on the top
+    // line and we will ignore it.)
+    if ((match = SM_STACK_FORMAT.exec(sframes[i])) ||
+        (match = NODE_STACK_FORMAT.exec(sframes[i]))) {
+      frames.push({
+        filename: match[2],
+        lineNo: match[3],
+        funcName: match[1],
+      });
+    }
+  }
+  return transformed;
+}
+
 function transformCardsFailure(rawCards, allDetails) {
-  var cards = rawCards.map(function(rawCard) {
-    // TODO: normalize/transform the exception in the error case.
-    return rawCard;
+  var cards = rawCards.map(function(rawCard, iCard) {
+    return {
+      id: iCard,
+      type: rawCard.type,
+      mode: rawCard.mode,
+      state: rawCard.state,
+      error: rawCard.error ? transformException(rawCard.error) : null
+    };
   });
   return {
+    id: 'cards',
     renderAs: 'cards',
     cards: cards
   };
@@ -87,11 +122,13 @@ function transformTestFailureLog(normRep, blackboard) {
     }
     else {
       detailList.push({
+        id: key,
         renderAs: 'unknown',
         raw: data
       });
     }
   }
+  blackboard.lastFailure = normRep;
 }
 
 /**

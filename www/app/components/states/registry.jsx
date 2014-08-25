@@ -9,14 +9,14 @@ var renderTypeToWidget = {
   'unknown': require('jsx!./UnknownState')
 };
 
-function stateFactory(normRep) {
+function stateFactory(timeContext, normRep) {
   var renderer = renderTypeToWidget[normRep.renderAs];
   if (!renderer) {
     console.warn('No renderer', normRep.renderAs, 'found');
     renderer = renderTypeToWidget['unknown'];
   }
 
-  return renderer({ rep: normRep });
+  return renderer({ timeContext: timeContext, normRep: normRep });
 };
 
 
