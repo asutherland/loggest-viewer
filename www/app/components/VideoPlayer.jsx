@@ -11,7 +11,7 @@ var VideoPlayer = React.createClass({
     return (
       <video className="log-video" style={ inlineStyle }
          src={this.props.url}
-         controls="true" preload="auto" />
+         controls="true" preload="auto" autoplay="false" />
     );
   },
 
